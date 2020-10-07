@@ -13,17 +13,17 @@
 
 
 
-# CrowdSec NGINX Blocker
+# CrowdSec NGINX Bouncer
 
-A lua blocker for nginx.
+A lua bouncer for nginx.
 
 ## How does it work ?
 
-This blocker leverages nginx lua's API, namely `access_by_lua_file`.
+This bouncer leverages nginx lua's API, namely `access_by_lua_file`.
 
 New/unknown IP are checked against crowdsec's database, and if request should be blocked, a **403** is returned to the user, and put in cache.
 
-At the back, this blocker uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
+At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 # Installation
 
