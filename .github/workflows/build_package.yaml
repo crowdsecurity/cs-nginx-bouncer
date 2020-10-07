@@ -1,0 +1,21 @@
+# .github/workflows/build-docker-image.yml
+name: release-package
+
+on: 
+  release:
+    types: prereleased
+
+jobs:
+  release-package:
+    name: Upload release package
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: make the package
+      run: make release
+    - name: Upload to release
+      uses: JasonEtco/upload-to-release@master
+      with:
+        args: cs-nginx-bouncer.tgz application/x-gzip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
