@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/crowdsecurity/cs-nginx-blocker/raw/master/docs/assets/crowdsec_nginx_logo.png" alt="CrowdSec" title="CrowdSec" width="280" height="400" />
+<img src="https://github.com/crowdsecurity/cs-nginx-bouncer/raw/master/docs/assets/crowdsec_nginx_logo.png" alt="CrowdSec" title="CrowdSec" width="280" height="400" />
 </p>
 <p align="center">
 <img src="https://img.shields.io/badge/build-pass-green">
@@ -23,19 +23,31 @@ This blocker leverages nginx lua's API, namely `access_by_lua_file`.
 
 New/unknown IP are checked against crowdsec's database, and if request should be blocked, a **403** is returned to the user, and put in cache.
 
-At the back, this blocker uses [crowdsec lua lib](https://github.com/crowdsecurity/cs-lua-lib/).
+At the back, this blocker uses [crowdsec lua lib](https://github.com/crowdsecurity/lua-cs-bouncer/).
 
 # Installation
 
 ## Install script
 
-Download the latest release [here](https://github.com/crowdsecurity/cs-nginx-blocker/releases)
+Download the latest release [here](https://github.com/crowdsecurity/cs-nginx-bouncer/releases)
 
 ```bash
-tar xvzf cs-nginx-blocker.tgz
-cd cs-nginx-blocker-v0.0.1
+tar xvzf cs-nginx-bouncer.tgz
+cd cs-nginx-bouncer/
 sudo ./install.sh
-systemctl restart nginx
+```
+
+Configure your API url and key in `/usr/local/lua/crowdsec/crowdsec.conf`:
+
+```lua
+API_URL=htts://<URL>:<PORT>
+API_KEY=<API_KEY>  -- generated with `cscli bouncers add -n <bouncer_name>
+```
+
+Then restart nginx:
+
+```sh
+sudo systemctl restart nginx
 ```
 
 :warning: the installation script will take care of dependencies for Debian/Ubuntu
@@ -43,9 +55,7 @@ systemctl restart nginx
   <summary>non-debian based dependencies</summary>
 
   - libnginx-mod-http-lua : nginx lua support
-  - lua-sql-sqlite3 : for SQLite support
-  - lua-sql-mysql : for MySQL support
-  - lua-logging : logging
+  - lua-sec : for https client request
 </details>
 
 
@@ -57,47 +67,45 @@ systemctl restart nginx
 The following packages are required :
 
 - lua
-- lua-sql-sqlite3
-- lua-sql-mysql
-- lua-logging
+- lua-sec
 - libnginx-mod-http-lua
 
 #### Debian/Ubuntu
 
 ```bash
-sudo apt-get install lua5.3 libnginx-mod-http-lua lua-sql-sqlite3 lua-sql-mysql lua-logging
+sudo apt-get install lua5.3 libnginx-mod-http-lua lua-sec
 ```
 
 Download the following 2 repositories:
 
-- [`cs-lua-lib`](https://github.com/crowdsecurity/cs-lua-lib):
+- [`lua-cs-bouncer`](https://github.com/crowdsecurity/lua-cs-bouncer):
 ```bash
-git clone https://github.com/crowdsecurity/cs-lua-lib.git
+git clone https://github.com/crowdsecurity/lua-cs-bouncer.git
 ```
 
-- [`cs-nginx-blocker`](https://github.com/crowdsecurity/cs-nginx-blocker)
+- [`cs-nginx-bouncer`](https://github.com/crowdsecurity/cs-nginx-bouncer)
 ```bash
-git clone https://github.com/crowdsecurity/cs-nginx-blocker.git
+git clone https://github.com/crowdsecurity/cs-nginx-bouncer.git
 ```
 
 ### Installation
 
-#### cs-lua-lib
+#### lua-cs-bouncer
 
 ```bash
-cd ./cs-lua-lib/
+cd ./lua-cs-bouncer/
 sudo make install
 ```
 
-#### cs-nginx-blocker
+#### cs-nginx-bouncer
 
-- Copy the `cs-nginx-blocker/nginx/crowdsec_nginx.conf` into `/etc/nginx/conf.d/crowdsec_nginx.conf`:
+- Copy the `cs-nginx-bouncer/nginx/crowdsec_nginx.conf` into `/etc/nginx/conf.d/crowdsec_nginx.conf`:
 ```bash
-cp ./cs-nginx-blocker/nginx/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx.conf
+cp ./cs-nginx-bouncer/nginx/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx.conf
 ```
-- Copy the `cs-nginx-blocker/nginx/access.lua` into `/usr/local/lua/crowdec/access.lua`:
+- Copy the `cs-nginx-bouncer/nginx/access.lua` into `/usr/local/lua/crowdec/access.lua`:
 ```bash
-cp ./cs-nginx-blocker/nginx/access.lua /usr/local/lua/crowdec/access.lua
+cp ./cs-nginx-bouncer/nginx/access.lua /usr/local/lua/crowdec/access.lua
 ```
 
 You can now restart your nginx server:
@@ -110,49 +118,18 @@ systemctl restart nginx
 
 The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf`, but you shouldn't have to edit it, the relevant configuration file being `/usr/local/lua/crowdsec/crowdsec.conf` :
 
-
-```bash
-# supported DATABASES : sqlite3, mysql
-#DB_PATH is only for sqlite3
-TYPE=sqlite3
-DB_PATH=/var/lib/crowdsec/data/crowdsec.db
-# Those parameters are only relevant for MySQL
-#DB_NAME=
-#DB_HOST=
-#DB_PORT=
-#DB_USERNAME=
-#DB_PASSWORD=
-# Where does the lua code put its logs
-LOG_FILE=/tmp/lua_mod.log
-# How many seconds is the information about an IP kept in cache
-CACHE_EXPIRATION=1
-# Cache size
-CACHE_SIZE=1000
 ```
-
-
-
-If instead of using SQLite you want to use MySQL, the configuration file will look like this :
-```bash
-# supported DATABASES : sqlite3, mysql
-# DB_PATH is only for sqlite3
-TYPE=mysql
-DB_NAME=crowdsec
-DB_HOST=localhost
-# If you need a specific port
-#DB_PORT=
-DB_USERNAME=crowdsec
-DB_PASSWORD=password
-LOG_FILE=/tmp/lua_mod.log
-CACHE_EXPIRATION=1
-CACHE_SIZE=1000
+API_URL=http://localhost:8080                 <-- the API url
+API_KEY=                                      <-- the API Key generated with `cscli bouncers add -n <bouncer_name>` 
+LOG_FILE=/tmp/lua_mod.log                     <-- path to log file
+CACHE_EXPIRATION=1                            <-- in seconds
+CACHE_SIZE=1000                               <-- cache size
 ```
-
 
 # How it works
 
  - deploys `/etc/nginx/conf.d/crowdsec_nginx.conf` with `access_by_lua` directive
- - deploys `/usr/local/lua/crowdsec/access.lua` with the lua code checking incoming IPs against local db
+ - deploys `/usr/local/lua/crowdsec/access.lua` with the lua code checking incoming IPs against crowdsec API
 
 # Testing
 
