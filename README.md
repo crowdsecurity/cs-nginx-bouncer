@@ -108,6 +108,13 @@ cp ./cs-nginx-bouncer/nginx/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx
 cp ./cs-nginx-bouncer/nginx/access.lua /usr/local/lua/crowdec/access.lua
 ```
 
+Configure your API url and key in `/usr/local/lua/crowdsec/crowdsec.conf`:
+
+```lua
+API_URL=htts://<URL>:<PORT>
+API_KEY=<API_KEY>  -- generated with `cscli bouncers add -n <bouncer_name>
+```
+
 You can now restart your nginx server:
 ```bash
 systemctl restart nginx
