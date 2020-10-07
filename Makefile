@@ -1,5 +1,5 @@
 BUILD_VERSION?="$(shell git for-each-ref --sort=-v:refname --count=1 --format '%(refname)'  | cut -d '/' -f3)"
-OUTDIR="cs-nginx-bouncer-v${BUILD_VERSION}/"
+OUTDIR="cs-nginx-bouncer-${BUILD_VERSION}/"
 LUA_MOD_DIR="${OUTDIR}lua-mod"
 OUT_ARCHIVE="cs-nginx-bouncer.tgz"
 default: release
