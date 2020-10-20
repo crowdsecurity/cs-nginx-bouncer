@@ -8,7 +8,6 @@ release:
 	mkdir -p ${LUA_MOD_DIR}
 	cp -r lua-cs-bouncer/lib/ "${LUA_MOD_DIR}"
 	cp lua-cs-bouncer/install.sh "${LUA_MOD_DIR}"
-	cp lua-cs-bouncer/template.conf "${LUA_MOD_DIR}"
 	chmod +x "${LUA_MOD_DIR}/install.sh"
 
 	cp lua-cs-bouncer/uninstall.sh "${LUA_MOD_DIR}"
@@ -21,4 +20,11 @@ release:
 	chmod +x ${OUTDIR}uninstall.sh
 
 	cp -r ./nginx/ ${OUTDIR}
+	cp -r ./config/ ${OUTDIR}
+
 	tar cvzf ${OUT_ARCHIVE} ${OUTDIR}
+
+clean:
+	rm ${OUT_ARCHIVE}
+	rm -rf ${OUTDIR}
+	rm -rf lua-cs-bouncer/
