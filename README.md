@@ -37,11 +37,18 @@ cd cs-nginx-bouncer/
 sudo ./install.sh
 ```
 
-Configure your API url and key in `/usr/local/lua/crowdsec/crowdsec.conf`:
+If you are on a mono-machine setup, the `cs-nginx-bouncer` install script will register directly to the local crowdsec, so you're good to go !
+
+## Configuration
+
+If your nginx bouncer needs to comunicate with a remote crowdsec API, you can configure API url and key in `/etc/crowdsec/cs-nginx-bouncer/crowdsec.conf`:
 
 ```lua
-API_URL=htts://<URL>:<PORT>
-API_KEY=<API_KEY>  -- generated with `cscli bouncers add -n <bouncer_name>
+API_URL=http://127.0.0.1:8080
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
+LOG_FILE=/tmp/lua_mod.log
+CACHE_EXPIRATION=1
+CACHE_SIZE=1000
 ```
 
 Then restart nginx:
@@ -57,7 +64,6 @@ sudo systemctl restart nginx
   - libnginx-mod-http-lua : nginx lua support
   - lua-sec : for https client request
 </details>
-
 
 
 ## From source
@@ -108,11 +114,14 @@ cp ./cs-nginx-bouncer/nginx/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx
 cp ./cs-nginx-bouncer/nginx/access.lua /usr/local/lua/crowdec/access.lua
 ```
 
-Configure your API url and key in `/usr/local/lua/crowdsec/crowdsec.conf`:
+Configure your API url and key in `/etc/crowdsec/cs-nginx-bouncer/crowdsec.conf`:
 
 ```lua
-API_URL=htts://<URL>:<PORT>
-API_KEY=<API_KEY>  -- generated with `cscli bouncers add -n <bouncer_name>
+API_URL=http://127.0.0.1:8080
+API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
+LOG_FILE=/tmp/lua_mod.log
+CACHE_EXPIRATION=1
+CACHE_SIZE=1000
 ```
 
 You can now restart your nginx server:
@@ -123,14 +132,14 @@ systemctl restart nginx
 
 # Configuration
 
-The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf`, but you shouldn't have to edit it, the relevant configuration file being `/usr/local/lua/crowdsec/crowdsec.conf` :
+The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf`, but you shouldn't have to edit it, the relevant configuration file being `/etc/crowdsec/cs-nginx-bouncer/crowdsec.conf` :
 
 ```
 API_URL=http://localhost:8080                 <-- the API url
 API_KEY=                                      <-- the API Key generated with `cscli bouncers add -n <bouncer_name>` 
 LOG_FILE=/tmp/lua_mod.log                     <-- path to log file
-CACHE_EXPIRATION=1                            <-- in seconds
-CACHE_SIZE=1000                               <-- cache size
+CACHE_EXPIRATION=1                            <-- in seconds : how often is the yes/no decisions for an IP refreshed
+CACHE_SIZE=1000                               <-- cache size : how many simulatenous entries are kept in 
 ```
 
 # How it works
