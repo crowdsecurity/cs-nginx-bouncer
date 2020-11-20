@@ -134,7 +134,7 @@ systemctl restart nginx
 
 The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf`, but you shouldn't have to edit it, the relevant configuration file being `/etc/crowdsec/cs-nginx-bouncer/crowdsec.conf` :
 
-```
+```bash
 API_URL=http://localhost:8080                 <-- the API url
 API_KEY=                                      <-- the API Key generated with `cscli bouncers add -n <bouncer_name>` 
 LOG_FILE=/tmp/lua_mod.log                     <-- path to log file
