@@ -24,6 +24,9 @@ release:
 	cp uninstall.sh ${OUTDIR}
 	chmod +x ${OUTDIR}uninstall.sh
 
+	cp upgrade.sh ${OUTDIR}
+	chmod +x ${OUTDIR}upgrade.sh
+
 	cp -r ./nginx/ ${OUTDIR}
 	tar cvzf ${OUT_ARCHIVE} ${OUTDIR}
 	rm -rf ${OUTDIR}

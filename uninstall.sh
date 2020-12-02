@@ -40,7 +40,11 @@ uninstall() {
 	rm ${NGINX_CONF_DIR}/${NGINX_CONF}
 }
 
-
+if ! [ $(id -u) = 0 ]; then
+    log_err "Please run the uninstall script as root or with sudo"
+    exit 1
+fi
 requirement
 remove_nginx_dependency
 uninstall
+echo "cs-nginx-bouncer uninstalled successfully"
