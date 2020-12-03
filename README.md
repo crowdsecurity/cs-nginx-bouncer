@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/crowdsecurity/cs-nginx-bouncer/raw/main/docs/assets/crowdsec_nginx_logo.png" alt="CrowdSec" title="CrowdSec" width="280" height="300" />
+<img src="https://github.com/crowdsecurity/cs-nginx-bouncer/raw/main/docs/assets/crowdsec_nginx.png" alt="CrowdSec" title="CrowdSec" width="280" height="300" />
 </p>
 <p align="center">
 <img src="https://img.shields.io/badge/build-pass-green">
@@ -38,6 +38,19 @@ sudo ./install.sh
 ```
 
 If you are on a mono-machine setup, the `cs-nginx-bouncer` install script will register directly to the local crowdsec, so you're good to go !
+
+## Upgrade script
+
+## Upgrade
+
+If you already have `cs-nginx-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-nginx-bouncer/releases) and run the following commands:
+
+```bash
+tar xzvf cs-nginx-bouncer.tgz
+cd cs-nginx-bouncer-v*/
+sudo ./upgrade.sh
+sudo systemctl restart nginx
+```
 
 ## Configuration
 
