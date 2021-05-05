@@ -33,7 +33,7 @@ Download the latest release [here](https://github.com/crowdsecurity/cs-nginx-bou
 
 ```bash
 tar xvzf cs-nginx-bouncer.tgz
-cd cs-nginx-bouncer/
+cd cs-nginx-bouncer-v*/
 sudo ./install.sh
 ```
 
