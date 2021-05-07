@@ -30,12 +30,15 @@ check_nginx_dependency() {
     do
         dpkg -l | grep ${dep} > /dev/null
         if [[ $? != 0 ]]; then
-            echo "${dep} not found, do you want to install it (Y/n)? "
-            read answer
+            if [[ $- =~ i ]]
+            then
+                echo "${dep} not found, do you want to install it (Y/n)? "
+                read answer
+            fi
             if [[ ${answer} == "" ]]; then
                 answer="y"
             fi
-            if [ "$answer" != "${answer#[Yy]}" ] ;then
+            if [ "$answer" != "${answer#[Yy]}" ]; then
                 apt-get install -y -qq ${dep} > /dev/null && echo "${dep} successfully installed"
             else
                 echo "unable to continue without ${dep}. Exiting" && exit 1
