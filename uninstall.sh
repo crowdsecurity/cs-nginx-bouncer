@@ -47,4 +47,4 @@ fi
 requirement
 remove_nginx_dependency
 uninstall
-echo "cs-nginx-bouncer uninstalled successfully"
+echo "crowdsec-nginx-bouncer uninstalled successfully"

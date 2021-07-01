@@ -1,8 +1,8 @@
 BUILD_VERSION?="$(shell git for-each-ref --sort=-v:refname --count=1 --format '%(refname)'  | cut -d '/' -f3)"
-OUTDIR="cs-nginx-bouncer-${BUILD_VERSION}/"
+OUTDIR="crowdsec-nginx-bouncer-${BUILD_VERSION}/"
 LUA_MOD_DIR="${OUTDIR}lua-mod"
 CONFIG_DIR="${OUTDIR}config"
-OUT_ARCHIVE="cs-nginx-bouncer.tgz"
+OUT_ARCHIVE="crowdsec-nginx-bouncer.tgz"
 default: release
 release: 
 	git clone https://github.com/crowdsecurity/lua-cs-bouncer.git

@@ -5,7 +5,7 @@ NGINX_CONF="crowdsec_nginx.conf"
 NGINX_CONF_DIR="/etc/nginx/conf.d/"
 ACCESS_FILE="access.lua"
 LIB_PATH="/usr/local/lua/crowdsec/"
-CONFIG_PATH="/etc/crowdsec/cs-nginx-bouncer/"
+CONFIG_PATH="/etc/crowdsec/bouncers/"
 
 requirement() {
     cd $LUA_MOD_DIR
@@ -17,8 +17,8 @@ requirement() {
 
 gen_apikey() {
     SUFFIX=`tr -dc A-Za-z0-9 </dev/urandom | head -c 8`
-    API_KEY=`cscli bouncers add cs-nginx-bouncer-${SUFFIX} -o raw`
-    API_KEY=${API_KEY} envsubst < ./config/crowdsec.conf > "${CONFIG_PATH}crowdsec.conf"
+    API_KEY=`cscli bouncers add crowdsec-nginx-bouncer-${SUFFIX} -o raw`
+    API_KEY=${API_KEY} envsubst < ./config/crowdsec.conf > "${CONFIG_PATH}crowdsec-nginx-bouncer.conf"
 }
 
 check_nginx_dependency() {
@@ -59,4 +59,4 @@ requirement
 check_nginx_dependency
 gen_apikey
 install
-echo "cs-nginx-bouncer installed successfully"
+echo "crowdsec-nginx-bouncer installed successfully"

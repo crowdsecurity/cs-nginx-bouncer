@@ -5,7 +5,7 @@ NGINX_CONF="crowdsec_nginx.conf"
 NGINX_CONF_DIR="/etc/nginx/conf.d/"
 ACCESS_FILE="access.lua"
 LIB_PATH="/usr/local/lua/crowdsec/"
-CONFIG_PATH="/etc/crowdsec/cs-nginx-bouncer/"
+CONFIG_PATH="/etc/crowdsec/bouncers/"
 
 requirement() {
     cd $LUA_MOD_DIR
@@ -25,10 +25,10 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 if [ ! -d "${CONFIG_PATH}" ]; then
-    echo "cs-nginx-bouncer is not installed, please run the ./install.sh script"
+    echo "crowdsec-nginx-bouncer is not installed, please run the ./install.sh script"
     exit 1
 fi
 
 requirement
 install
-echo "cs-nginx-bouncer upgraded successfully"
+echo "crowdsec-nginx-bouncer upgraded successfully"
