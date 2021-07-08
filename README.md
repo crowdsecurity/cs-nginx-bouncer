@@ -32,29 +32,29 @@ At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecuri
 Download the latest release [here](https://github.com/crowdsecurity/cs-nginx-bouncer/releases)
 
 ```bash
-tar xvzf cs-nginx-bouncer.tgz
-cd cs-nginx-bouncer-v*/
+tar xvzf crowdsec-nginx-bouncer.tgz
+cd crowdsec-nginx-bouncer-v*/
 sudo ./install.sh
 ```
 
-If you are on a mono-machine setup, the `cs-nginx-bouncer` install script will register directly to the local crowdsec, so you're good to go !
+If you are on a mono-machine setup, the `crowdsec-nginx-bouncer` install script will register directly to the local crowdsec, so you're good to go !
 
 ## Upgrade script
 
 ## Upgrade
 
-If you already have `cs-nginx-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-nginx-bouncer/releases) and run the following commands:
+If you already have `crowdsec-nginx-bouncer` installed, please download the [latest release](https://github.com/crowdsecurity/cs-nginx-bouncer/releases) and run the following commands:
 
 ```bash
-tar xzvf cs-nginx-bouncer.tgz
-cd cs-nginx-bouncer-v*/
+tar xzvf crowdsec-nginx-bouncer.tgz
+cd crowdsec-nginx-bouncer-v*/
 sudo ./upgrade.sh
 sudo systemctl restart nginx
 ```
 
 ## Configuration
 
-If your nginx bouncer needs to comunicate with a remote crowdsec API, you can configure API url and key in `/etc/crowdsec/cs-nginx-bouncer/crowdsec.conf`:
+If your nginx bouncer needs to comunicate with a remote crowdsec API, you can configure API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
 
 ```lua
 API_URL=http://127.0.0.1:8080
@@ -102,7 +102,7 @@ Download the following 2 repositories:
 git clone https://github.com/crowdsecurity/lua-cs-bouncer.git
 ```
 
-- [`cs-nginx-bouncer`](https://github.com/crowdsecurity/cs-nginx-bouncer)
+- [`crowdsec-nginx-bouncer`](https://github.com/crowdsecurity/cs-nginx-bouncer)
 ```bash
 git clone https://github.com/crowdsecurity/cs-nginx-bouncer.git
 ```
@@ -116,18 +116,18 @@ cd ./lua-cs-bouncer/
 sudo make install
 ```
 
-#### cs-nginx-bouncer
+#### crowdsec-nginx-bouncer
 
-- Copy the `cs-nginx-bouncer/nginx/crowdsec_nginx.conf` into `/etc/nginx/conf.d/crowdsec_nginx.conf`:
+- Copy the `crowdsec-nginx-bouncer/nginx/crowdsec_nginx.conf` into `/etc/nginx/conf.d/crowdsec_nginx.conf`:
 ```bash
-cp ./cs-nginx-bouncer/nginx/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx.conf
+cp ./crowdsec-nginx-bouncer/nginx/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx.conf
 ```
-- Copy the `cs-nginx-bouncer/nginx/access.lua` into `/usr/local/lua/crowdec/access.lua`:
+- Copy the `crowdsec-nginx-bouncer/nginx/access.lua` into `/usr/local/lua/crowdec/access.lua`:
 ```bash
-cp ./cs-nginx-bouncer/nginx/access.lua /usr/local/lua/crowdec/access.lua
+cp ./crowdsec-nginx-bouncer/nginx/access.lua /usr/local/lua/crowdec/access.lua
 ```
 
-Configure your API url and key in `/etc/crowdsec/cs-nginx-bouncer/crowdsec.conf`:
+Configure your API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf`:
 
 ```lua
 API_URL=http://127.0.0.1:8080
@@ -145,7 +145,7 @@ systemctl restart nginx
 
 # Configuration
 
-The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf`, but you shouldn't have to edit it, the relevant configuration file being `/etc/crowdsec/cs-nginx-bouncer/crowdsec.conf` :
+The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf`, but you shouldn't have to edit it, the relevant configuration file being `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf` :
 
 ```bash
 API_URL=http://localhost:8080                 <-- the API url
