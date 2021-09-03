@@ -1,0 +1,12 @@
+Source: crowdsec-nginx-bouncer
+Maintainer: Crowdsec Team <debian@crowdsec.net>
+Build-Depends: debhelper, bash
+
+Package: crowdsec-nginx-bouncer
+Provides: crowdsec-nginx-bouncer
+Description: lua-based nginx bouncer for Crowdsec
+Architecture: any
+Depends: nginx, libnginx-mod-http-lua, lua-logging, lua5.0 | lua5.1 | lua5.2 | lua5.3 | lua5.4 , lua-sec
+
+
+

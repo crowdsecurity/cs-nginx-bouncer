@@ -1,0 +1,5 @@
+crowdsec-nginx-bouncer (1.0.12) UNRELEASED; urgency=medium
+
+  * debian package
+  
+ -- Crowdsec Team <info@crowdsec.net>  Mon, 08 Feb 2021 09:38:06 +0100
