@@ -25,3 +25,6 @@ override_dh_auto_install:
 	cp lua-cs-bouncer/lib/pureffi.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
 	cp lua-cs-bouncer/lib/utils.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
 	cp nginx/access.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
+	mkdir -p debian/crowdsec-nginx-bouncer/etc/crowdsec/bouncers/
+	cp lua-cs-bouncer/template.conf debian/crowdsec-nginx-bouncer/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
+
