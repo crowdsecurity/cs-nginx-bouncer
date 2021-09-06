@@ -1,0 +1,27 @@
+#!/usr/bin/make -f
+
+export DEB_VERSION=$(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
+export BUILD_VERSION=v${DEB_VERSION}-debian-pragmatic
+
+
+%:
+	dh $@
+
+override_dh_systemd_start:
+	echo "Not running dh_systemd_start"
+override_dh_auto_clean:
+	rm -rf lua-cs-bouncer
+override_dh_auto_test:
+override_dh_auto_build:
+override_dh_auto_install:
+	mkdir -p debian/crowdsec-nginx-bouncer/etc/nginx/conf.d/
+	cp nginx/crowdsec_nginx.conf debian/crowdsec-nginx-bouncer/etc/nginx/conf.d/
+	git clone https://github.com/crowdsecurity/lua-cs-bouncer.git
+	mkdir -p debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
+	cp lua-cs-bouncer/lib/config.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
+	cp lua-cs-bouncer/lib/CrowdSec.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
+	cp lua-cs-bouncer/lib/json.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
+	cp lua-cs-bouncer/lib/lrucache.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
+	cp lua-cs-bouncer/lib/pureffi.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
+	cp lua-cs-bouncer/lib/utils.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
+	cp nginx/access.lua debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
