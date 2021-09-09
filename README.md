@@ -60,6 +60,7 @@ If your nginx bouncer needs to comunicate with a remote crowdsec API, you can co
 API_URL=http://127.0.0.1:8080
 API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
 LOG_FILE=/tmp/lua_mod.log
+LOG_LEVEL=INFO
 CACHE_EXPIRATION=1
 CACHE_SIZE=1000
 ```
@@ -133,6 +134,7 @@ Configure your API url and key in `/etc/crowdsec/bouncers/crowdsec-nginx-bouncer
 API_URL=http://127.0.0.1:8080
 API_KEY=<API KEY> --generated with `cscli bouncers add -n <bouncer_name>
 LOG_FILE=/tmp/lua_mod.log
+LOG_LEVEL=INFO
 CACHE_EXPIRATION=1
 CACHE_SIZE=1000
 ```
@@ -151,6 +153,7 @@ The configuration file loaded by nginx is `/etc/nginx/conf.d/crowdsec_nginx.conf
 API_URL=http://localhost:8080                 <-- the API url
 API_KEY=                                      <-- the API Key generated with `cscli bouncers add -n <bouncer_name>` 
 LOG_FILE=/tmp/lua_mod.log                     <-- path to log file
+LOG_LEVEL=INFO                                <-- log level (INFO, WARN, DEBUG, ERROR, FATAL)
 CACHE_EXPIRATION=1                            <-- in seconds : how often is the yes/no decisions for an IP refreshed
 CACHE_SIZE=1000                               <-- cache size : how many simulatenous entries are kept in 
 ```
