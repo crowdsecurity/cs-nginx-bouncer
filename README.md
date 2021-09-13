@@ -27,5 +27,5 @@ At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecuri
 
 # Installation
 
-See [documentation](https://doc.crowdsec.net/docs/bouncers/nginx)
+Please follow the [official documentation](https://doc.crowdsec.net/docs/bouncers/nginx).
 
