@@ -3,9 +3,9 @@ systemctl daemon-reload
 
 
 START=0
-
+luarocks install lua-resty-http
+luarocks install lua-cjson
 if [ "$1" = "configure" ] && [ "$2" = "" ]; then
-
     type cscli
 
     if [ "$?" -eq "0" ] ; then
@@ -13,6 +13,7 @@ if [ "$1" = "configure" ] && [ "$2" = "" ]; then
         echo "cscli/crowdsec is present, generating API key"
         unique=`date +%s`
         API_KEY=`cscli -oraw bouncers add nginx-${unique}`
+        CROWDSEC_LAPI_URL="http://127.0.0.1:8080"
         if [ $? -eq 1 ] ; then
             echo "failed to create API token, service won't be started."
             START=0
@@ -23,7 +24,7 @@ if [ "$1" = "configure" ] && [ "$2" = "" ]; then
 
         TMP=`mktemp -p /tmp/`
         cp /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf ${TMP}
-        API_KEY=${API_KEY} envsubst < ${TMP} > /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
+        API_KEY=${API_KEY} CROWDSEC_LAPI_URL=${CROWDSEC_LAPI_URL} envsubst < ${TMP} > /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
         rm ${TMP}
     fi
 else
