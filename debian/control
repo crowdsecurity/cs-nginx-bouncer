@@ -6,7 +6,7 @@ Package: crowdsec-nginx-bouncer
 Provides: crowdsec-nginx-bouncer
 Description: lua-based nginx bouncer for Crowdsec
 Architecture: any
-Depends: nginx, lua, luarocks
+Depends: nginx, lua5.1, luarocks
 
 
 
