@@ -4,27 +4,22 @@ LUA_MOD_DIR="./lua-mod"
 NGINX_CONF="crowdsec_nginx.conf"
 NGINX_CONF_DIR="/etc/nginx/conf.d/"
 ACCESS_FILE="access.lua"
-LIB_PATH="/usr/local/lua/crowdsec/"
+LIB_PATH="/usr/lib/crowdsec/lua/"
 CONFIG_PATH="/etc/crowdsec/bouncers/"
-
-requirement() {
-    cd $LUA_MOD_DIR
-    bash "./install.sh"
-    cd ..
-    mkdir -p "${CONFIG_PATH}"
-    mkdir -p "${LIB_PATH}"
-}
 
 gen_apikey() {
     SUFFIX=`tr -dc A-Za-z0-9 </dev/urandom | head -c 8`
     API_KEY=`cscli bouncers add crowdsec-nginx-bouncer-${SUFFIX} -o raw`
-    API_KEY=${API_KEY} envsubst < ./config/crowdsec.conf > "${CONFIG_PATH}crowdsec-nginx-bouncer.conf"
+    CROWDSEC_LAPI_URL="http://127.0.0.1:8080"
+    API_KEY=${API_KEY} CROWDSEC_LAPI_URL=${CROWDSEC_LAPI_URL} envsubst < ${LUA_MOD_DIR}/nginx/template.conf > "${CONFIG_PATH}crowdsec-nginx-bouncer.conf"
 }
 
 check_nginx_dependency() {
     DEPENDENCY=(
         "libnginx-mod-http-lua"
-        "lua-logging"
+        "luarocks"
+        "lua5.1"
+        "gettext-base"
     )
     for dep in ${DEPENDENCY[@]};
     do
@@ -46,8 +41,12 @@ check_nginx_dependency() {
 
 
 install() {
+    mkdir -p ${LIB_PATH}/plugins/crowdsec/
 	cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
-	cp nginx/${ACCESS_FILE} ${LIB_PATH}
+    cp ${LUA_MOD_DIR}/nginx/config.lua ${LIB_PATH}/plugins/crowdsec/
+    cp ${LUA_MOD_DIR}/nginx/crowdsec.lua ${LIB_PATH}
+    cp ${LUA_MOD_DIR}/nginx/access.lua ${LIB_PATH}
+    cp ${LUA_MOD_DIR}/nginx/recaptcha.lua ${LIB_PATH}
 }
 
 
@@ -55,7 +54,7 @@ if ! [ $(id -u) = 0 ]; then
     log_err "Please run the install script as root or with sudo"
     exit 1
 fi
-requirement
+
 check_nginx_dependency
 gen_apikey
 install
