@@ -11,6 +11,7 @@ gen_apikey() {
     SUFFIX=`tr -dc A-Za-z0-9 </dev/urandom | head -c 8`
     API_KEY=`cscli bouncers add crowdsec-nginx-bouncer-${SUFFIX} -o raw`
     CROWDSEC_LAPI_URL="http://127.0.0.1:8080"
+    mkdir -p "${CONFIG_PATH}"
     API_KEY=${API_KEY} CROWDSEC_LAPI_URL=${CROWDSEC_LAPI_URL} envsubst < ${LUA_MOD_DIR}/nginx/template.conf > "${CONFIG_PATH}crowdsec-nginx-bouncer.conf"
 }
 
