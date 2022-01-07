@@ -10,8 +10,6 @@ release:
 	mkdir -p ${LUA_MOD_DIR}
 	cp -r lua-cs-bouncer/nginx/ "${LUA_MOD_DIR}"
 
-	cp config/crowdsec.conf "${CONFIG_DIR}"
-
 	cp install.sh ${OUTDIR}
 	chmod +x ${OUTDIR}install.sh
 
