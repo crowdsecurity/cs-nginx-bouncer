@@ -17,7 +17,9 @@ requirement() {
 remove_nginx_dependency() {
     DEPENDENCY=(
         "libnginx-mod-http-lua"
-        "lua-logging"
+        "luarocks"
+        "lua5.1"
+        "gettext-base"
     )
     for dep in ${DEPENDENCY[@]};
     do

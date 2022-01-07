@@ -9,16 +9,14 @@ CONFIG_PATH="/etc/crowdsec/bouncers/"
 CONFIG_FILE="${CONFIG_PATH}crowdsec-nginx-bouncer.conf"
 OLD_CONFIG_FILE="/etc/crowdsec/crowdsec-nginx-bouncer.conf"
 
-requirement() {
-    cd $LUA_MOD_DIR
-    bash "./install.sh"
-    cd ..
-    mkdir -p "${LIB_PATH}"
-}
 
 install() {
+    mkdir -p ${LIB_PATH}/plugins/crowdsec/
 	cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
-	cp nginx/${ACCESS_FILE} ${LIB_PATH}
+    cp ${LUA_MOD_DIR}/nginx/config.lua ${LIB_PATH}/plugins/crowdsec/
+    cp ${LUA_MOD_DIR}/nginx/crowdsec.lua ${LIB_PATH}
+    cp ${LUA_MOD_DIR}/nginx/access.lua ${LIB_PATH}
+    cp ${LUA_MOD_DIR}/nginx/recaptcha.lua ${LIB_PATH}
 }
 
 migrate_conf() {
@@ -42,7 +40,6 @@ if [ ! -d "${CONFIG_PATH}" ]; then
     exit 1
 fi
 
-requirement
 install
 migrate_conf
 echo "crowdsec-nginx-bouncer upgraded successfully"

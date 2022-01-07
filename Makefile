@@ -8,16 +8,7 @@ default: release
 release: 
 	git clone -b ${LUA_BOUNCER_BRANCH} https://github.com/crowdsecurity/lua-cs-bouncer.git
 	mkdir -p ${LUA_MOD_DIR}
-	mkdir -p ${CONFIG_DIR}
-	cp -r lua-cs-bouncer/lib/ "${LUA_MOD_DIR}"
-	cp lua-cs-bouncer/install.sh "${LUA_MOD_DIR}"
-	cp lua-cs-bouncer/template.conf "${LUA_MOD_DIR}"
-	chmod +x "${LUA_MOD_DIR}/install.sh"
-
-	cp config/crowdsec.conf "${CONFIG_DIR}"
-
-	cp lua-cs-bouncer/uninstall.sh "${LUA_MOD_DIR}"
-	chmod +x "${LUA_MOD_DIR}/uninstall.sh"
+	cp -r lua-cs-bouncer/nginx/ "${LUA_MOD_DIR}"
 
 	cp install.sh ${OUTDIR}
 	chmod +x ${OUTDIR}install.sh
