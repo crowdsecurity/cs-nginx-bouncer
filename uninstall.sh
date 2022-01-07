@@ -4,7 +4,7 @@ REQUIRE_SCRIPT="./lua-mod/uninstall.sh"
 NGINX_CONF="crowdsec_nginx.conf"
 NGINX_CONF_DIR="/etc/nginx/conf.d/"
 ACCESS_FILE="access.lua"
-LIB_PATH="/usr/lib/crowdsec/lua/"
+LIB_PATH="/usr/local/lua/crowdsec/"
 
 
 requirement() {
