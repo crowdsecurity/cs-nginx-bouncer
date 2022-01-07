@@ -3,10 +3,13 @@ systemctl daemon-reload
 
 
 START=0
+
 luarocks install lua-resty-http
 luarocks install lua-cjson
-if [ "$1" = "configure" ] && [ "$2" = "" ]; then
-    type cscli
+
+if [ "$1" = "configure" ]; then
+
+    type cscli > /dev/null
 
     if [ "$?" -eq "0" ] ; then
         START=1
@@ -36,4 +39,4 @@ if [ ${START} -eq 0 ] ; then
     echo "no api key was generated"
 fi
 
-echo "Restart nginx to enable the crowdsec bouncer : systemctl restart nginx"
+echo "Restart nginx to enable the crowdsec bouncer : sudo systemctl restart nginx"
