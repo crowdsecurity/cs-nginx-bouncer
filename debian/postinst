@@ -6,8 +6,6 @@ START=0
 
 luarocks install lua-resty-http
 luarocks install lua-cjson
-luarocks install lua-resty-ipmatcher
-luarocks install lua-resty-core
 
 if [ "$1" = "configure" ]; then
 

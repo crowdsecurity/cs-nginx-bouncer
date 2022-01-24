@@ -49,12 +49,10 @@ install() {
     cp ${LUA_MOD_DIR}/nginx/access.lua ${LIB_PATH}
     cp ${LUA_MOD_DIR}/nginx/recaptcha.lua ${LIB_PATH}
     cp ${LUA_MOD_DIR}/nginx/iputils.lua ${LIB_PATH}/plugins/crowdsec/
-    cp ${LUA_MOD_DIR}/nginx/bitop.lua ${LIB_PATH}
+    cp ${LUA_MOD_DIR}/nginx/bitop.lua ${LIB_PATH}/plugins/crowdsec/
 
     luarocks install lua-resty-http
     luarocks install lua-cjson
-    luarocks install lua-resty-ipmatcher
-    luarocks install lua-resty-core
 }
 
 
