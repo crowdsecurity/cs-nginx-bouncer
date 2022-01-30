@@ -43,18 +43,23 @@ check_nginx_dependency() {
 
 install() {
     mkdir -p ${LIB_PATH}/plugins/crowdsec/
+    mkdir -p ${LIB_PATH}/templates/
+
 	cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
     cp ${LUA_MOD_DIR}/nginx/config.lua ${LIB_PATH}/plugins/crowdsec/
     cp ${LUA_MOD_DIR}/nginx/crowdsec.lua ${LIB_PATH}
     cp ${LUA_MOD_DIR}/nginx/recaptcha.lua ${LIB_PATH}/plugins/crowdsec/
-    cp ${LUA_MOD_DIR}/nginx/captcha.html ${LIB_PATH}
     cp ${LUA_MOD_DIR}/nginx/iputils.lua ${LIB_PATH}/plugins/crowdsec/
     cp ${LUA_MOD_DIR}/nginx/bitop.lua ${LIB_PATH}/plugins/crowdsec/
     cp ${LUA_MOD_DIR}/nginx/utils.lua ${LIB_PATH}/plugins/crowdsec/
+    cp ${LUA_MOD_DIR}/nginx/template.lua ${LIB_PATH}/plugins/crowdsec/
+    cp ${LUA_MOD_DIR}/nginx/ban.lua ${LIB_PATH}/plugins/crowdsec/
+
+    cp ${LUA_MOD_DIR}/nginx/templates/captcha.html ${LIB_PATH}/templates/
+    cp ${LUA_MOD_DIR}/nginx/templates/ban.html ${LIB_PATH}/templates/
 
     luarocks install lua-resty-http
     luarocks install lua-cjson
-    luarocks install lua-resty-template
 }
 
 

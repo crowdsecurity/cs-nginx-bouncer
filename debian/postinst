@@ -6,7 +6,6 @@ START=0
 
 luarocks install lua-resty-http
 luarocks install lua-cjson
-luarocks install lua-resty-template
 
 if [ "$1" = "configure" ]; then
 
