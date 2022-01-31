@@ -14,9 +14,9 @@ install() {
     mkdir -p ${LIB_PATH}/plugins/crowdsec/
     mkdir -p ${DATA_PATH}/templates/
 
-	cp nginx/config_example.conf ${NGINX_CONF_DIR}/${NGINX_CONF}
+	cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
     cp -r ${LUA_MOD_DIR}/lib/* ${LIB_PATH}/
-    CP -R ${LUA_MOD_DIR}/templates/* ${DATA_PATH}/templates/
+    cp -r ${LUA_MOD_DIR}/templates/* ${DATA_PATH}/templates/
 }
 
 migrate_conf() {

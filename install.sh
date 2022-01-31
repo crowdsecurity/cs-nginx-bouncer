@@ -13,7 +13,7 @@ gen_apikey() {
     API_KEY=`cscli bouncers add crowdsec-nginx-bouncer-${SUFFIX} -o raw`
     CROWDSEC_LAPI_URL="http://127.0.0.1:8080"
     mkdir -p "${CONFIG_PATH}"
-    API_KEY=${API_KEY} CROWDSEC_LAPI_URL=${CROWDSEC_LAPI_URL} envsubst < ${LUA_MOD_DIR}/nginx/template.conf > "${CONFIG_PATH}crowdsec-nginx-bouncer.conf"
+    API_KEY=${API_KEY} CROWDSEC_LAPI_URL=${CROWDSEC_LAPI_URL} envsubst < ${LUA_MOD_DIR}/config_example.conf > "${CONFIG_PATH}crowdsec-nginx-bouncer.conf"
 }
 
 check_nginx_dependency() {
@@ -46,9 +46,9 @@ install() {
     mkdir -p ${LIB_PATH}/plugins/crowdsec/
     mkdir -p ${DATA_PATH}/templates/
 
-	cp nginx/config_example.conf ${NGINX_CONF_DIR}/${NGINX_CONF}
+	cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
     cp -r ${LUA_MOD_DIR}/lib/* ${LIB_PATH}/
-    CP -R ${LUA_MOD_DIR}/templates/* ${DATA_PATH}/templates/
+    cp -r ${LUA_MOD_DIR}/templates/* ${DATA_PATH}/templates/
 
     luarocks install lua-resty-http
     luarocks install lua-cjson
