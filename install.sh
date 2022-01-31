@@ -6,6 +6,7 @@ NGINX_CONF_DIR="/etc/nginx/conf.d/"
 ACCESS_FILE="access.lua"
 LIB_PATH="/usr/local/lua/crowdsec/"
 CONFIG_PATH="/etc/crowdsec/bouncers/"
+DATA_PATH="/var/lib/crowdsec/lua/"
 
 gen_apikey() {
     SUFFIX=`tr -dc A-Za-z0-9 </dev/urandom | head -c 8`
@@ -43,10 +44,11 @@ check_nginx_dependency() {
 
 install() {
     mkdir -p ${LIB_PATH}/plugins/crowdsec/
-    mkdir -p ${LIB_PATH}/templates/
+    mkdir -p ${DATA_PATH}/templates/
 
-	cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
-    cp -r ${LUA_MOD_DIR}/nginx/* ${LIB_PATH}/
+	cp nginx/config_example.conf ${NGINX_CONF_DIR}/${NGINX_CONF}
+    cp -r ${LUA_MOD_DIR}/lib/* ${LIB_PATH}/
+    CP -R ${LUA_MOD_DIR}/templates/* ${DATA_PATH}/templates/
 
     luarocks install lua-resty-http
     luarocks install lua-cjson

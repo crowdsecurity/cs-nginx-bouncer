@@ -8,13 +8,15 @@ LIB_PATH="/usr/local/lua/crowdsec/"
 CONFIG_PATH="/etc/crowdsec/bouncers/"
 CONFIG_FILE="${CONFIG_PATH}crowdsec-nginx-bouncer.conf"
 OLD_CONFIG_FILE="/etc/crowdsec/crowdsec-nginx-bouncer.conf"
-
+DATA_PATH="/var/lib/crowdsec/lua/"
 
 install() {
     mkdir -p ${LIB_PATH}/plugins/crowdsec/
-    mkdir -p ${LIB_PATH}/templates/
-	cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
-    cp -r ${LUA_MOD_DIR}/nginx/* ${LIB_PATH}/
+    mkdir -p ${DATA_PATH}/templates/
+
+	cp nginx/config_example.conf ${NGINX_CONF_DIR}/${NGINX_CONF}
+    cp -r ${LUA_MOD_DIR}/lib/* ${LIB_PATH}/
+    CP -R ${LUA_MOD_DIR}/templates/* ${DATA_PATH}/templates/
 }
 
 migrate_conf() {
