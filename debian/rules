@@ -17,7 +17,7 @@ override_dh_auto_install:
 	mkdir -p debian/crowdsec-nginx-bouncer/etc/nginx/conf.d/
 	cp nginx/crowdsec_nginx.conf debian/crowdsec-nginx-bouncer/etc/nginx/conf.d/
 
-	git clone -b captcha_support https://github.com/crowdsecurity/lua-cs-bouncer.git
+	git clone https://github.com/crowdsecurity/lua-cs-bouncer.git
 
 	mkdir -p debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
 	mkdir -p debian/crowdsec-nginx-bouncer/var/lib/crowdsec/lua/templates/
