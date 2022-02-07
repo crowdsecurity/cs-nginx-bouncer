@@ -5,7 +5,7 @@ NGINX_CONF="crowdsec_nginx.conf"
 NGINX_CONF_DIR="/etc/nginx/conf.d/"
 ACCESS_FILE="access.lua"
 LIB_PATH="/usr/local/lua/crowdsec/"
-
+DATA_PATH="/var/lib/crowdsec/lua/"
 
 requirement() {
     if [ -f "$REQUIRE_SCRIPT" ]; then
@@ -40,6 +40,8 @@ remove_nginx_dependency() {
 
 uninstall() {
 	rm ${NGINX_CONF_DIR}/${NGINX_CONF}
+    rm -rf ${DATA_PATH}
+    rm -rf ${LIB_PATH}
 }
 
 if ! [ $(id -u) = 0 ]; then
