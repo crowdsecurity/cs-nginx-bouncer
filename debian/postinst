@@ -40,3 +40,6 @@ if [ ${START} -eq 0 ] ; then
 fi
 
 echo "Restart nginx to enable the crowdsec bouncer : sudo systemctl restart nginx"
+echo ""
+echo "If you want to setup captcha remediation, follow official documentation : "
+echo "https://docs.crowdsec.net/docs/bouncers/nginx#when-using-captcha-remediation"
