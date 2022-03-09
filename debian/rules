@@ -14,8 +14,8 @@ override_dh_auto_clean:
 override_dh_auto_test:
 override_dh_auto_build:
 override_dh_auto_install:
-	mkdir -p debian/crowdsec-nginx-bouncer/etc/nginx/conf.d/
-	cp nginx/crowdsec_nginx.conf debian/crowdsec-nginx-bouncer/etc/nginx/conf.d/
+	mkdir -p debian/crowdsec-nginx-bouncer/usr/share/crowdsec-nginx-bouncer/
+	cp nginx/crowdsec_nginx.conf debian/crowdsec-nginx-bouncer/usr/share/crowdsec-nginx-bouncer/
 
 	git clone https://github.com/crowdsecurity/lua-cs-bouncer.git
 
