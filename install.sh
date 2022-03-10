@@ -10,16 +10,30 @@ DATA_PATH="/var/lib/crowdsec/lua/"
 LAPI_DEFAULT_PORT="8080"
 SILENT="false"
 
+usage() {
+      echo "Usage:"
+      echo "    ./install.sh -h                 Display this help message."
+      echo "    ./install.sh                    Install the bouncer in interactive mode"
+      echo "    ./install.sh -y                 Install the bouncer and accept everything"
+      exit 0  
+}
+
+
 #Accept cmdline arguments to overwrite options.
 while [[ $# -gt 0 ]]
 do
     case $1 in
         -y|--yes)
             SILENT="true"
+            shift
+        ;;
+        -h|--help)
+            usage
         ;;
     esac
     shift
 done
+
 
 gen_apikey() {
     

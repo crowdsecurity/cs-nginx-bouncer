@@ -7,6 +7,31 @@ ACCESS_FILE="access.lua"
 LIB_PATH="/usr/local/lua/crowdsec/"
 DATA_PATH="/var/lib/crowdsec/lua/"
 
+
+usage() {
+      echo "Usage:"
+      echo "    ./uninstall.sh -h                 Display this help message."
+      echo "    ./uninstall.sh                    Uninstall the bouncer in interactive mode"
+      echo "    ./uninstall.sh -y                 Uninstall the bouncer and accept everything"
+      exit 0  
+}
+
+#Accept cmdline arguments to overwrite options.
+while [[ $# -gt 0 ]]
+do
+    case $1 in
+        -y|--yes)
+            SILENT="true"
+            shift
+        ;;
+        -h|--help)
+            usage
+        ;;
+    esac
+    shift
+done
+
+
 requirement() {
     if [ -f "$REQUIRE_SCRIPT" ]; then
         bash $REQUIRE_SCRIPT
@@ -25,14 +50,18 @@ remove_nginx_dependency() {
     do
         dpkg -l | grep ${dep} > /dev/null
         if [[ $? == 0 ]]; then
-            echo "${dep} found, do you want to remove it (Y/n)? "
-            read answer
-            if [[ ${answer} == "" ]]; then
-                answer="y"
+            if [[ ${SILENT} == "true" ]]; then
+                sudo apt-get install -y -qq ${dep} > /dev/null && echo "${dep} successfully installed"
+            else
+                echo "${dep} found, do you want to remove it (Y/n)? "
+                read answer
+                if [[ ${answer} == "" ]]; then
+                    answer="y"
+                fi
+                if [ "$answer" != "${answer#[Yy]}" ] ;then
+                    apt-get remove --purge -y -qq ${dep} > /dev/null && echo "${dep} successfully removed"
+                fi
             fi
-            if [ "$answer" != "${answer#[Yy]}" ] ;then
-                apt-get remove --purge -y -qq ${dep} > /dev/null && echo "${dep} successfully removed"
-            fi      
         fi
     done
 }
