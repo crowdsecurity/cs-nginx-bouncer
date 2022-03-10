@@ -7,6 +7,8 @@ START=0
 luarocks install lua-resty-http
 luarocks install lua-cjson
 
+LAPI_DEFAULT_PORT="8080"
+
 if [ "$1" = "configure" ]; then
 
     type cscli > /dev/null
@@ -16,7 +18,11 @@ if [ "$1" = "configure" ]; then
         echo "cscli/crowdsec is present, generating API key"
         unique=`date +%s`
         API_KEY=`cscli -oraw bouncers add nginx-${unique}`
-        CROWDSEC_LAPI_URL="http://127.0.0.1:8080"
+        PORT=$(cscli config show --key "Config.API.Server.ListenURI"|cut -d ":" -f2)
+        if [ ! -z "$PORT" ]; then
+            LAPI_DEFAULT_PORT=${PORT}
+        fi
+        CROWDSEC_LAPI_URL="http://127.0.0.1:${LAPI_DEFAULT_PORT}"
         if [ $? -eq 1 ] ; then
             echo "failed to create API token, service won't be started."
             START=0
