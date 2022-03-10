@@ -8,6 +8,18 @@ LIB_PATH="/usr/local/lua/crowdsec/"
 CONFIG_PATH="/etc/crowdsec/bouncers/"
 DATA_PATH="/var/lib/crowdsec/lua/"
 LAPI_DEFAULT_PORT="8080"
+SILENT="false"
+
+#Accept cmdline arguments to overwrite options.
+while [[ $# -gt 0 ]]
+do
+    case $1 in
+        --unattended)
+            SILENT="true"
+        ;;
+    esac
+    shift
+done
 
 gen_apikey() {
     SUFFIX=`tr -dc A-Za-z0-9 </dev/urandom | head -c 8`
@@ -32,16 +44,20 @@ check_nginx_dependency() {
     do
         dpkg -l | grep ${dep} > /dev/null
         if [[ $? != 0 ]]; then
-            echo "${dep} not found, do you want to install it (Y/n)? "
-            read answer
-            if [[ ${answer} == "" ]]; then
-                answer="y"
-            fi
-            if [ "$answer" != "${answer#[Yy]}" ] ;then
+            if [[ ${SILENT} == "true" ]]; then
                 sudo apt-get install -y -qq ${dep} > /dev/null && echo "${dep} successfully installed"
             else
-                echo "unable to continue without ${dep}. Exiting" && exit 1
-            fi      
+                echo "${dep} not found, do you want to install it (Y/n)? "
+                read answer
+                if [[ ${answer} == "" ]]; then
+                    answer="y"
+                fi
+                if [ "$answer" != "${answer#[Yy]}" ] ;then
+                    sudo apt-get install -y -qq ${dep} > /dev/null && echo "${dep} successfully installed"
+                else
+                    echo "unable to continue without ${dep}. Exiting" && exit 1
+                fi
+            fi
         fi
     done
 }
