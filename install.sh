@@ -22,11 +22,19 @@ do
 done
 
 gen_apikey() {
-    SUFFIX=`tr -dc A-Za-z0-9 </dev/urandom | head -c 8`
-    API_KEY=`sudo cscli bouncers add crowdsec-nginx-bouncer-${SUFFIX} -o raw`
-    PORT=$(cscli config show --key "Config.API.Server.ListenURI"|cut -d ":" -f2)
-    if [ ! -z "$PORT" ]; then
-       LAPI_DEFAULT_PORT=${PORT}
+    
+    type cscli > /dev/null
+
+    if [ "$?" -eq "0" ] ; then
+        SUFFIX=`tr -dc A-Za-z0-9 </dev/urandom | head -c 8`
+        API_KEY=`sudo cscli bouncers add crowdsec-nginx-bouncer-${SUFFIX} -o raw`
+        PORT=$(cscli config show --key "Config.API.Server.ListenURI"|cut -d ":" -f2)
+        if [ ! -z "$PORT" ]; then
+            LAPI_DEFAULT_PORT=${PORT}
+        fi
+        echo "Bouncer registered to the CrowdSec Local API."
+    else
+        echo "cscli is not present, unable to register the bouncer to the CrowdSec Local API."
     fi
     CROWDSEC_LAPI_URL="http://127.0.0.1:${LAPI_DEFAULT_PORT}"
     mkdir -p "${CONFIG_PATH}"
@@ -80,11 +88,5 @@ check_nginx_dependency
 gen_apikey
 install
 
-if command -v "$CSCLI" >/dev/null; then
-    PORT=$(cscli config show --key "Config.API.Server.ListenURI"|cut -d ":" -f2)
-    if [ ! -z "$PORT" ]; then
-       sed -i "s/localhost:8080/localhost:${PORT}/g" /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
-    fi
-fi
 
 echo "crowdsec-nginx-bouncer installed successfully"
