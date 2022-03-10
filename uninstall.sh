@@ -6,7 +6,7 @@ NGINX_CONF_DIR="/etc/nginx/conf.d/"
 ACCESS_FILE="access.lua"
 LIB_PATH="/usr/local/lua/crowdsec/"
 DATA_PATH="/var/lib/crowdsec/lua/"
-
+SILENT="false"
 
 usage() {
       echo "Usage:"
