@@ -51,7 +51,7 @@ install() {
     sudo mkdir -p ${LIB_PATH}/plugins/crowdsec/
     sudo mkdir -p ${DATA_PATH}/templates/
 
-	sudo cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
+    sudo cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
     sudo cp -r ${LUA_MOD_DIR}/lib/* ${LIB_PATH}/
     sudo cp -r ${LUA_MOD_DIR}/templates/* ${DATA_PATH}/templates/
 
