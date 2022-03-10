@@ -55,11 +55,6 @@ install() {
 }
 
 
-if ! [ $(id -u) = 0 ]; then
-    log_err "Please run the install script as root or with sudo"
-    exit 1
-fi
-
 check_nginx_dependency
 gen_apikey
 install
