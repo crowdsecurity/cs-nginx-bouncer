@@ -35,10 +35,11 @@ if [ "$1" = "configure" ]; then
         cp /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf ${TMP}
         API_KEY=${API_KEY} CROWDSEC_LAPI_URL=${CROWDSEC_LAPI_URL} envsubst < ${TMP} > /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
         rm ${TMP}
-
-        mkdir -p /etc/nginx/conf.d/
-        cp /usr/share/crowdsec-nginx-bouncer/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx.conf
     fi
+
+    mkdir -p /etc/nginx/conf.d/
+    cp /usr/share/crowdsec-nginx-bouncer/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx.conf
+
 else
     START=1
 fi
