@@ -52,7 +52,7 @@ gen_apikey() {
     fi
     CROWDSEC_LAPI_URL="http://127.0.0.1:${LAPI_DEFAULT_PORT}"
     mkdir -p "${CONFIG_PATH}"
-    API_KEY=${API_KEY} CROWDSEC_LAPI_URL=${CROWDSEC_LAPI_URL} envsubst < ${LUA_MOD_DIR}/config_example.conf | sudo tee -a "${CONFIG_PATH}crowdsec-nginx-bouncer.conf" >/dev/null
+    API_KEY=${API_KEY} CROWDSEC_LAPI_URL=${CROWDSEC_LAPI_URL} envsubst '$API_KEY $CROWDSEC_LAPI_URL' < ${LUA_MOD_DIR}/config_example.conf | sudo tee -a "${CONFIG_PATH}crowdsec-nginx-bouncer.conf" >/dev/null
 }
 
 check_nginx_dependency() {
