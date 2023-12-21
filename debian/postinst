@@ -1,52 +1,63 @@
 
 systemctl daemon-reload
 
-
-START=0
-
 luarocks install lua-resty-http
 luarocks install lua-cjson
 
+API_KEY_REQUIRED=true
+BOUNCER_CONFIG_PATH="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
+API_KEY="<API_KEY>"
+CROWDSEC_LAPI_URL="<LAPI_URL>"
 LAPI_DEFAULT_PORT="8080"
 
 if [ "$1" = "configure" ]; then
 
-    type cscli > /dev/null
+    type cscli
 
     if [ "$?" -eq "0" ] ; then
-        START=1
-        echo "cscli/crowdsec is present, generating API key"
-        unique=`date +%s`
-        API_KEY=`cscli -oraw bouncers add nginx-${unique}`
-        PORT=$(cscli config show --key "Config.API.Server.ListenURI"|cut -d ":" -f2)
-        if [ ! -z "$PORT" ]; then
-            LAPI_DEFAULT_PORT=${PORT}
+        # Check if it's an upgrade
+        if [ "$2" != "" ] ; then
+            echo "Upgrading, check if there is bouncer configuration"
+            if [ -f "${BOUNCER_CONFIG_PATH}" ] ; then
+                API_KEY_REQUIRED=false
+            fi
         fi
-        CROWDSEC_LAPI_URL="http://127.0.0.1:${LAPI_DEFAULT_PORT}"
-        if [ $? -eq 1 ] ; then
-            echo "failed to create API token, service won't be started."
-            START=0
-            API_KEY="<API_KEY>"
-        else
-            echo "API Key : ${API_KEY}"
+        API=$(cscli config show --key "Config.API.Server")
+        if [ "$API" = "nil" ] || [ "$API" = "<nil>" ] ; then
+            API_KEY_REQUIRED=false
         fi
-
-        TMP=`mktemp -p /tmp/`
-        cp /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf ${TMP}
-        API_KEY=${API_KEY} CROWDSEC_LAPI_URL=${CROWDSEC_LAPI_URL} envsubst < ${TMP} > /etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf
-        rm ${TMP}
+        if [ ${API_KEY_REQUIRED} = true ] ; then
+            echo "cscli/crowdsec is present, generating API key"
+            unique=$(date +%s)
+            API_KEY=$(cscli -oraw bouncers add crowdsec-nginx-bouncer-"${unique}")
+            PORT=$(cscli config show --key "Config.API.Server.ListenURI"|cut -d ":" -f2)
+            if [ ! -z "$PORT" ]; then
+                LAPI_DEFAULT_PORT=${PORT}
+            fi
+            CROWDSEC_LAPI_URL="http://127.0.0.1:${LAPI_DEFAULT_PORT}"
+            if [ $? -eq 1 ] ; then
+                echo "failed to create API key."
+                API_KEY_REQUIRED=true
+                API_KEY="<API_KEY>"
+            else
+                echo "API Key : ${API_KEY}"
+                TMP=$(mktemp -p /tmp/)
+                cp ${BOUNCER_CONFIG_PATH} "${TMP}"
+                API_KEY="${API_KEY}" CROWDSEC_LAPI_URL="${CROWDSEC_LAPI_URL}" envsubst '$API_KEY $CROWDSEC_LAPI_URL' < "${TMP}" > ${BOUNCER_CONFIG_PATH}
+                rm "${TMP}"
+            fi
+        fi
     fi
 
     mkdir -p /etc/nginx/conf.d/
     cp /usr/share/crowdsec-nginx-bouncer/crowdsec_nginx.conf /etc/nginx/conf.d/crowdsec_nginx.conf
 
 else
-    START=1
+    API_KEY_REQUIRED=false
 fi
 
-
-if [ ${START} -eq 0 ] ; then
-    echo "no api key was generated"
+if [ ${API_KEY_REQUIRED} = true ] ; then
+    echo "Can't generate an API key for the bouncer. Please do it manually"
 fi
 
 echo "Restart nginx to enable the crowdsec bouncer : sudo systemctl restart nginx"
