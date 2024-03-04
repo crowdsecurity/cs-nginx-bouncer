@@ -1,8 +1,8 @@
 
 systemctl daemon-reload
 
-luarocks install lua-resty-http
-luarocks install lua-cjson
+luarocks install lua-resty-http 0.17.1-0
+luarocks install lua-cjson 2.1.0.10-1
 
 API_KEY_REQUIRED=true
 BOUNCER_CONFIG_PATH="/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf"
