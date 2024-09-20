@@ -93,8 +93,8 @@ install() {
     sudo cp -r ${LUA_MOD_DIR}/lib/* ${LIB_PATH}/
     sudo cp -r ${LUA_MOD_DIR}/templates/* ${DATA_PATH}/templates/
 
-    sudo luarocks install lua-resty-http
-    sudo luarocks install lua-cjson
+    sudo luarocks install lua-resty-http  0.17.1-0
+    sudo luarocks install lua-cjson 2.1.0.10-1
 }
 
 
