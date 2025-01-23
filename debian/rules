@@ -7,8 +7,6 @@ export BUILD_VERSION=v${DEB_VERSION}-debian-pragmatic
 %:
 	dh $@
 
-override_dh_systemd_start:
-	echo "Not running dh_systemd_start"
 override_dh_auto_clean:
 	rm -rf lua-cs-bouncer
 override_dh_auto_test:
@@ -17,7 +15,7 @@ override_dh_auto_install:
 	mkdir -p debian/crowdsec-nginx-bouncer/usr/share/crowdsec-nginx-bouncer/
 	cp nginx/crowdsec_nginx.conf debian/crowdsec-nginx-bouncer/usr/share/crowdsec-nginx-bouncer/
 
-	git clone https://github.com/crowdsecurity/lua-cs-bouncer.git
+	git clone -b metrics https://github.com/crowdsecurity/lua-cs-bouncer.git
 
 	mkdir -p debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
 	mkdir -p debian/crowdsec-nginx-bouncer/var/lib/crowdsec/lua/templates/
