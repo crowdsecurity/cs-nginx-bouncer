@@ -5,7 +5,7 @@ Build-Depends: debhelper, bash
 Package: crowdsec-nginx-bouncer
 Provides: crowdsec-nginx-bouncer
 Description: lua-based nginx bouncer for Crowdsec
-Architecture: any
+Architecture: all
 Depends: nginx, lua5.1, libnginx-mod-http-lua, luarocks, gettext-base
 
 

@@ -7,6 +7,8 @@ export BUILD_VERSION=v${DEB_VERSION}-debian-pragmatic
 %:
 	dh $@
 
+override_dh_systemd_start:
+	echo "Not running dh_systemd_start"
 override_dh_auto_clean:
 	rm -rf lua-cs-bouncer
 override_dh_auto_test:
