@@ -6,7 +6,7 @@ OUT_ARCHIVE="crowdsec-nginx-bouncer.tgz"
 LUA_BOUNCER_BRANCH?=v1.0.0
 default: release
 release: 
-	git clone -b ${LUA_BOUNCER_BRANCH} https://github.com/crowdsecurity/lua-cs-bouncer.git
+	git clone -b "${LUA_BOUNCER_BRANCH}" https://github.com/crowdsecurity/lua-cs-bouncer.git
 	mkdir -p ${LUA_MOD_DIR}
 	cp -r lua-cs-bouncer/* "${LUA_MOD_DIR}"/
 
