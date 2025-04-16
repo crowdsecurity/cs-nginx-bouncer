@@ -40,6 +40,7 @@ if [ "$1" = "configure" ]; then
                 API_KEY_REQUIRED=true
                 API_KEY="<API_KEY>"
             else
+                API_KEY_REQUIRED=false
                 echo "API Key : ${API_KEY}"
                 TMP=$(mktemp -p /tmp/)
                 cp ${BOUNCER_CONFIG_PATH} "${TMP}"
