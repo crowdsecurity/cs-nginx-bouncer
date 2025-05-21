@@ -7,5 +7,4 @@ Provides: crowdsec-nginx-bouncer
 Description: lua-based nginx bouncer for Crowdsec
 Architecture: all
 Depends: nginx, lua5.1, libnginx-mod-http-lua, luarocks, gettext-base
-
-
+Breaks: nginx (<< 1.20), libnginx-mod-http-lua (<< 1.20)
