@@ -2,7 +2,7 @@
 
 export DEB_VERSION=$(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
 export BUILD_VERSION=v${DEB_VERSION}-debian-pragmatic
-export LUA_BOUNCER_BRANCH?=v1.0.10
+export LUA_BOUNCER_BRANCH?=v1.0.11
 
 %:
 	dh $@
