@@ -6,16 +6,24 @@ on:
     branches:
       - main
 
+permissions: {}
+
+# concurrent pushes to main would race to update the same draft
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   update_release_draft:
+    name: Update release draft
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to create and update the release draft
+      pull-requests: read # to collect the merged pull requests
     steps:
-      # Drafts your next Release notes as Pull Requests are merged into "master"
-      - uses: release-drafter/release-drafter@v5
+      # Drafts your next Release notes as Pull Requests are merged into "main"
+      - uses: release-drafter/release-drafter@4d75298e00d9e34c483e5ff8c68d0ea1c1940c1e # v7.5.1
         with:
           config-name: release-drafter.yml
-          # (Optional) specify config name to use, relative to .github/. Default: release-drafter.yml
-          # config-name: my-config.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          

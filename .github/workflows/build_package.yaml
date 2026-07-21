@@ -1,21 +1,29 @@
-# .github/workflows/build-docker-image.yml
 name: release-package
 
-on: 
+on:
   release:
     types: prereleased
+
+permissions: {}
 
 jobs:
   release-package:
     name: Upload release package
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to upload the package to the release
     steps:
-    - uses: actions/checkout@v1
-    - name: make the package
-      run: make release
-    - name: Upload to release
-      uses: JasonEtco/upload-to-release@master
-      with:
-        args: crowdsec-nginx-bouncer.tgz application/x-gzip
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          # the Makefile derives BUILD_VERSION from the tags
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: make the package
+        run: make release
+
+      - name: Upload to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" crowdsec-nginx-bouncer.tgz --clobber
