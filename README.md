@@ -29,3 +29,9 @@ At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecuri
 
 Please follow the [official documentation](https://doc.crowdsec.net/docs/bouncers/nginx).
 
+
+# Altcha
+If Altcha remediation is needed, you need to include the following snippet on every vhost concerned:
+```
+include snippets/crowdsec_altcha.conf;
+```
