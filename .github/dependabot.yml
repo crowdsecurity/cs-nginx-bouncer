@@ -9,3 +9,6 @@ updates:
       github-actions:
         patterns:
           - "*"
+
+# Vendored Lua dependencies (vendor/) are not a Dependabot ecosystem; they are
+# tracked by .github/workflows/vendor.yml instead.

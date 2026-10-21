@@ -23,6 +23,7 @@ override_dh_auto_install:
 	mkdir -p debian/crowdsec-nginx-bouncer/var/lib/crowdsec/lua/templates/
 
 	cp -r lua-cs-bouncer/lib/* debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/
+	for dep in vendor/*/; do cp -r "$${dep}lib/"* debian/crowdsec-nginx-bouncer/usr/lib/crowdsec/lua/; done
 	cp -r lua-cs-bouncer/templates/* debian/crowdsec-nginx-bouncer/var/lib/crowdsec/lua/templates/
 
 	mkdir -p debian/crowdsec-nginx-bouncer/etc/crowdsec/bouncers/

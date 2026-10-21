@@ -29,3 +29,17 @@ At the back, this bouncer uses [crowdsec lua lib](https://github.com/crowdsecuri
 
 Please follow the [official documentation](https://doc.crowdsec.net/docs/bouncers/nginx).
 
+
+# Vendored dependencies
+
+Pure-Lua dependencies (currently `lua-resty-http`) are vendored under `vendor/` and shipped with the bouncer, pinned by tag and commit in `vendor/vendor.conf`. `lua-cjson` is a C module and comes from the distribution package.
+
+```sh
+./scripts/vendor.sh list                          # pinned versions
+./scripts/vendor.sh outdated                      # newer upstream tags
+./scripts/vendor.sh update lua-resty-http [tag]   # bump (default: latest tag)
+./scripts/vendor.sh verify                        # vendor/ matches upstream
+./scripts/vendor.sh advisories                    # upstream security advisories (needs gh)
+```
+
+The `vendored-dependencies` workflow runs weekly, opens a PR for each outdated dependency and reports upstream security advisories.

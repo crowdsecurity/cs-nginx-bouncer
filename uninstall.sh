@@ -42,7 +42,7 @@ requirement() {
 remove_nginx_dependency() {
     DEPENDENCY=(
         "libnginx-mod-http-lua"
-        "luarocks"
+        "lua-cjson"
         "lua5.1"
         "gettext-base"
     )

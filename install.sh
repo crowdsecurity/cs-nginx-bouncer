@@ -58,7 +58,7 @@ gen_apikey() {
 check_nginx_dependency() {
     DEPENDENCY=(
         "libnginx-mod-http-lua"
-        "luarocks"
+        "lua-cjson"
         "lua5.1"
         "gettext-base"
     )
@@ -92,9 +92,6 @@ install() {
     sudo cp nginx/${NGINX_CONF} ${NGINX_CONF_DIR}/${NGINX_CONF}
     sudo cp -r ${LUA_MOD_DIR}/lib/* ${LIB_PATH}/
     sudo cp -r ${LUA_MOD_DIR}/templates/* ${DATA_PATH}/templates/
-
-    sudo luarocks install lua-resty-http  0.17.1-0
-    sudo luarocks install lua-cjson 2.1.0.10-1
 }
 
 
