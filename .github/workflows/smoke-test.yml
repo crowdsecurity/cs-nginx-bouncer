@@ -1,0 +1,45 @@
+name: smoke-test
+
+# Builds the Debian package, installs it on the distribution nginx and checks
+# that nginx starts and every vendored Lua module loads. This catches a vendored
+# dependency (e.g. a lua-resty-http bump from the vendored-dependencies
+# workflow) needing a Lua module that distributions do not ship.
+
+on:
+  pull_request:
+    paths:
+      - vendor/**
+      - scripts/vendor.sh
+      - scripts/smoke-test.sh
+      - nginx/**
+      - debian/**
+      - Makefile
+      - .github/workflows/smoke-test.yml
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  smoke-test:
+    name: Distribution nginx (${{ matrix.image }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - debian:12
+          - debian:13
+          - ubuntu:24.04
+    container:
+      image: ${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - run: ./scripts/smoke-test.sh
