@@ -75,7 +75,15 @@ fetch() {
     rm -rf "${dest}"
     mkdir -p "${dest}"
     cp -r "${tmp}/src/lib" "${dest}/"
-    cp "${tmp}/src"/LICENSE* "${dest}/"
+    # Some upstreams (e.g. lua-resty-string) have no LICENSE file and state
+    # their license in the README instead: keep that so the terms ship along.
+    if compgen -G "${tmp}/src/LICENSE*" > /dev/null; then
+        cp "${tmp}/src"/LICENSE* "${dest}/"
+    elif compgen -G "${tmp}/src/README*" > /dev/null; then
+        cp "${tmp}/src"/README* "${dest}/"
+    else
+        die "${repo} ${tag} has neither a LICENSE nor a README file"
+    fi
 }
 
 cmd_list() {
