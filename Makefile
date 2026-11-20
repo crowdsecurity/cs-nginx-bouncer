@@ -1,4 +1,4 @@
-BUILD_VERSION?="$(shell git for-each-ref --sort=-v:refname --count=1 --format '%(refname)'  | cut -d '/' -f3)"
+BUILD_VERSION?="$(shell git -c versionsort.suffix=-rc for-each-ref --merged HEAD --sort=-v:refname --count=1 --format '%(refname:short)' refs/tags)"
 OUTDIR="crowdsec-nginx-bouncer-${BUILD_VERSION}/"
 LUA_MOD_DIR="${OUTDIR}lua-mod"
 CONFIG_DIR="${OUTDIR}config"

@@ -15,11 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # the Makefile derives BUILD_VERSION from the tags
-          fetch-depth: 0
           persist-credentials: false
 
       - name: make the package
+        env:
+          # name the package's folder after the release's tag
+          BUILD_VERSION: ${{ github.event.release.tag_name }}
         run: make release
 
       - name: Upload to release
