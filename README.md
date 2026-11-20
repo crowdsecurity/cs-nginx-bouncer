@@ -32,7 +32,7 @@ Please follow the [official documentation](https://doc.crowdsec.net/docs/bouncer
 
 # Vendored dependencies
 
-Pure-Lua dependencies (currently `lua-resty-http`) are vendored under `vendor/` and shipped with the bouncer, pinned by tag and commit in `vendor/vendor.conf`. `lua-cjson` is a C module and comes from the distribution package.
+Pure-Lua dependencies (currently `lua-resty-http` and `lua-resty-string`, which `lua-resty-http` requires and distributions do not package) are vendored under `vendor/` and shipped with the bouncer, pinned by tag and commit in `vendor/vendor.conf`. `lua-cjson` is a C module and comes from the distribution package.
 
 ```sh
 ./scripts/vendor.sh list                          # pinned versions
