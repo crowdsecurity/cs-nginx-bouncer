@@ -43,3 +43,9 @@ Pure-Lua dependencies (currently `lua-resty-http` and `lua-resty-string`, which 
 ```
 
 The `vendored-dependencies` workflow runs weekly, opens a PR for each outdated dependency and reports upstream security advisories.
+
+The `smoke-test` workflow builds the Debian package, installs it on the distribution nginx (Debian 12/13, Ubuntu 24.04) and checks that nginx starts and every vendored module loads, so a bump needing a module distributions do not ship fails the PR. Run it locally with:
+
+```sh
+docker run --rm -v "$PWD:/src:ro" debian:12 /src/scripts/smoke-test.sh
+```
