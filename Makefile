@@ -22,6 +22,7 @@ release:
 	chmod +x ${OUTDIR}upgrade.sh
 
 	cp -r ./nginx/ ${OUTDIR}
+	sed -i 's|"crowdsec-nginx-bouncer/[^"]*"|"crowdsec-nginx-bouncer/'${BUILD_VERSION}'"|' ${OUTDIR}nginx/crowdsec_nginx.conf
 	tar cvzf ${OUT_ARCHIVE} ${OUTDIR}
 	rm -rf ${OUTDIR}
 	rm -rf "lua-cs-bouncer/"

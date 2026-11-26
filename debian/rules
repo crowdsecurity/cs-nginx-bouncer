@@ -16,6 +16,7 @@ override_dh_auto_build:
 override_dh_auto_install:
 	mkdir -p debian/crowdsec-nginx-bouncer/usr/share/crowdsec-nginx-bouncer/
 	cp nginx/crowdsec_nginx.conf debian/crowdsec-nginx-bouncer/usr/share/crowdsec-nginx-bouncer/
+	sed -i 's|"crowdsec-nginx-bouncer/[^"]*"|"crowdsec-nginx-bouncer/${BUILD_VERSION}"|' debian/crowdsec-nginx-bouncer/usr/share/crowdsec-nginx-bouncer/crowdsec_nginx.conf
 
 	git clone -b "${LUA_BOUNCER_BRANCH}" https://github.com/crowdsecurity/lua-cs-bouncer.git
 
